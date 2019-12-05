@@ -22,3 +22,5 @@ public class IndexServlet extends HttpServlet {
         request.getRequestDispatcher("/usersindex.jsp").forward(request, response);
     }
 }
+
+//index.jsp: create.jsp edit.jsp notfound.jsp
