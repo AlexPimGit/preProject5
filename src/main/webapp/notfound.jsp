@@ -5,6 +5,6 @@
     <title>Page not found</title>
 </head>
 <body>
-<h2>Soryan. Page not found</h2>
+<h2>Soryan... Page not found</h2>
 </body>
 </html>
