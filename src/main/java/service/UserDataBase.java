@@ -1,11 +1,11 @@
-package Interfaces;
+package service;
 
 import model.User;
 
 import java.util.List;
 
-public interface DAO {
-    List<User> getAllUsers();
+public interface UserDataBase {
+    List getAllUsers();
 
     void addUser(User user);
 

@@ -1,14 +1,15 @@
 package DAO;
 
-import Interfaces.DAO;
 import model.User;
+import service.UserDataBase;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UserDAO implements DAO {
+public class UserDAO implements UserDataBase {
     private Logger LOGGER = Logger.getLogger(UserDAO.class.getName());//получаем логгер
 
     private Connection connection;

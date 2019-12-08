@@ -1,48 +1,36 @@
 package service;
 
-import Config.DBConfig;
 import DAO.UserDAO;
-import Interfaces.Service;
+import database.DBConfig;
 import model.User;
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 
-public class UserService implements Service {
+public class UserService implements UserCRUD {
     //надо получить ДАО для доступа к подключению и действиям к БД с одним connection из DBconfig
-    private static UserDAO getUserDAO() {
-        return new UserDAO(DBConfig.getMysqlConnection());
-    }
-
+    private UserDAO userDAO = new UserDAO(DBConfig.getMysqlConnection());
 
     public UserService() {
     }
 
-    public void crateDataBase() {
-        getUserDAO().createTable();
-    }
-
     public List<User> getAllUsers() {
-        return getUserDAO().getAllUsers();
+        return userDAO.getAllUsers();
     }
 
     public void deleteUser(Long id) {
-        getUserDAO().deleteUser(id);
+        userDAO.deleteUser(id);
     }
 
     public void addUser(User user) {
-        getUserDAO().addUser(user);
+        userDAO.addUser(user);
     }
 
     public User getUserById(long id) {
-        return getUserDAO().getUserById(id);
+        return userDAO.getUserById(id);
     }
 
     public void changeUser(User user) {
-        getUserDAO().changeUser(user);
+        userDAO.changeUser(user);
     }
 
 }

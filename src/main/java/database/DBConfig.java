@@ -1,6 +1,4 @@
-package Config;
-
-import DAO.UserDAO;
+package database;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -33,6 +31,4 @@ public class DBConfig {
             throw new IllegalStateException();
         }
     }
-
-
 }

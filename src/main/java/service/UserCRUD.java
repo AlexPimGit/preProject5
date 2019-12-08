@@ -1,11 +1,11 @@
-package Interfaces;
+package service;
 
 import model.User;
 
 import java.util.List;
 
-public interface Service {
-    List<User> getAllUsers();
+public interface UserCRUD {
+    List getAllUsers();
 
     void deleteUser(Long id);
 

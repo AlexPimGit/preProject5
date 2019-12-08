@@ -23,4 +23,3 @@ public class IndexServlet extends HttpServlet {
     }
 }
 
-//index.jsp: create.jsp edit.jsp notfound.jsp
