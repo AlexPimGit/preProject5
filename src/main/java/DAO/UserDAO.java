@@ -1,7 +1,7 @@
 package DAO;
 
 import model.User;
-import service.UserDataBase;
+import service.UserServiceImpl;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class UserDAO implements UserDataBase {
+public class UserDAO implements UserServiceImpl {
     private Logger LOGGER = Logger.getLogger(UserDAO.class.getName());//получаем логгер
 
     private Connection connection;
@@ -53,7 +53,7 @@ public class UserDAO implements UserDataBase {
         }
     }
 
-    @Override
+
     public User getUserByName(String name) {
         User user = new User();
         String query = "SELECT * FROM users WHERE name = ?";

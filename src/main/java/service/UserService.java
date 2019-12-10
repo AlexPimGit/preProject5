@@ -1,13 +1,13 @@
 package service;
 
 import DAO.UserDAO;
-import database.DBConfig;
+import util.DBConfig;
 import model.User;
 
 import java.util.List;
 
-public class UserService implements UserCRUD {
-    //надо получить ДАО для доступа к подключению и действиям к БД с одним connection из DBconfig
+public class UserService implements UserServiceImpl {
+
     private UserDAO userDAO = new UserDAO(DBConfig.getMysqlConnection());
 
     public UserService() {
