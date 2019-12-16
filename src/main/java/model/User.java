@@ -1,8 +1,19 @@
 package model;
 
+import javax.persistence.*;
+
+@Entity//объект класса можно «переложить» в таблицу
+@Table(name = "users")//связывает класс и таблицу необ
+
 public class User {
+    @Id//поле является первичным ключом в таблице
+    @Column(name = "id")//: связывает поле и колонку в таблице необ
+    //значение первичного ключа генерируется автоматически.ТИП ГЕНЕРАЦИИ. IDENTITY (увеличение)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "brand")
     private String name;
+    @Column(name = "nickname")
     private String nickname;
 
     public User() {

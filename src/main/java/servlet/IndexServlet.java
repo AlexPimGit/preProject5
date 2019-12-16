@@ -1,7 +1,7 @@
 package servlet;
 
 import model.User;
-import service.UserService;
+import service.UserJdbcServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @WebServlet("/")
 public class IndexServlet extends HttpServlet {
-    private UserService userService = new UserService();
+    private UserJdbcServiceImpl userService = new UserJdbcServiceImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

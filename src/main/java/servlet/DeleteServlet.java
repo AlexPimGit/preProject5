@@ -1,6 +1,6 @@
 package servlet;
 
-import service.UserService;
+import service.UserJdbcServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
-    private UserService userService = new UserService();
+    private UserJdbcServiceImpl userService = new UserJdbcServiceImpl();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

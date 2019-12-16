@@ -1,36 +1,19 @@
 package service;
 
-import DAO.UserDAO;
-import util.DBConfig;
 import model.User;
 
 import java.util.List;
 
-public class UserService implements UserServiceImpl {
+public interface UserService {
+    List getAllUsers();
 
-    private UserDAO userDAO = new UserDAO(DBConfig.getMysqlConnection());
+    void deleteUser(Long id);
 
-    public UserService() {
-    }
+    void addUser(User user);
 
-    public List<User> getAllUsers() {
-        return userDAO.getAllUsers();
-    }
+    User getUserById(long id);
 
-    public void deleteUser(Long id) {
-        userDAO.deleteUser(id);
-    }
-
-    public void addUser(User user) {
-        userDAO.addUser(user);
-    }
-
-    public User getUserById(long id) {
-        return userDAO.getUserById(id);
-    }
-
-    public void changeUser(User user) {
-        userDAO.changeUser(user);
-    }
-
+    void changeUser(User user);
 }
+
+
