@@ -2,7 +2,7 @@ package servlet;
 
 import model.User;
 import service.UserHibernateServiceImpl;
-import service.UserJdbcServiceImpl;
+import service.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +17,7 @@ public class IndexServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<User> users = UserHibernateServiceImpl.getInstance().getAllUsers();
+        List<User> users = UserServiceImpl.getInstance().getAllUsers();
         request.setAttribute("users", users);
         request.getRequestDispatcher("/usersindex.jsp").forward(request, response);
     }

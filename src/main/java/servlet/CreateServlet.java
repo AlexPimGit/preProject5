@@ -2,7 +2,6 @@ package servlet;
 
 import model.User;
 import service.UserHibernateServiceImpl;
-import service.UserJdbcServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,7 +28,7 @@ public class CreateServlet extends HttpServlet {
         String nickname = request.getParameter("nickname");
         User user = new User(name, nickname);
         UserHibernateServiceImpl.getInstance().addUser(user);
-        //request.getRequestDispatcher("/index").forward(request, response);
+
         response.sendRedirect(request.getContextPath() + "/");
     }
 }

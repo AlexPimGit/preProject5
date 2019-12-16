@@ -2,7 +2,6 @@ package servlet;
 
 import model.User;
 import service.UserHibernateServiceImpl;
-import service.UserJdbcServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/edit")
 public class EditServlet extends HttpServlet {
-    private UserJdbcServiceImpl userService = new UserJdbcServiceImpl();
+    //private UserServiceImpl userService = new UserJdbcServiceImpl(); //for JDBC
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

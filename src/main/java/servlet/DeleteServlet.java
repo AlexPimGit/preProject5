@@ -1,7 +1,6 @@
 package servlet;
 
 import service.UserHibernateServiceImpl;
-import service.UserJdbcServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
