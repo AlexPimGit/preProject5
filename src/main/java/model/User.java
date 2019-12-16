@@ -11,7 +11,7 @@ public class User {
     //значение первичного ключа генерируется автоматически.ТИП ГЕНЕРАЦИИ. IDENTITY (увеличение)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "brand")
+    @Column(name = "name")
     private String name;
     @Column(name = "nickname")
     private String nickname;

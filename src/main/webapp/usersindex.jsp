@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <title>Users</title>
 
-
-
     <style>
         .fig {
             text-align: center; /* Выравнивание по центру */
@@ -18,10 +16,14 @@
             background-image: url(<c:url value="/1.jpg"/>);
         }
     </style>
+
 </head>
 <body bgcolor="#00CED1">
+
 <h2>Users List</h2>
+
 <p><a href='<c:url value="/create" />'>Create new</a></p>
+
 <table>
     <tr>
         <th>Name</th>
@@ -30,8 +32,7 @@
     </tr>
 
     <c:forEach var="user" items="${users}">
-        <tr>
-            <td>${user.name}</td>
+        <tr><td>${user.name}</td>
             <td>${user.nickname}</td>
             <td>
                 <a href='<c:url value="/edit?id=${user.id}" />'>Edit</a>
@@ -40,8 +41,7 @@
                     <input type="hidden" name="id" value="${user.id}">
                     <input type="submit" value="Delete">
                 </form>
-            </td>
-        </tr>
+            </td></tr>
     </c:forEach>
 
 </table>

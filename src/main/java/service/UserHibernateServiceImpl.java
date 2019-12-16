@@ -25,7 +25,7 @@ public class UserHibernateServiceImpl implements UserService {
     }
 
     @Override
-    public List getAllUsers() {
+    public List<User> getAllUsers() {
         return new UserHibernateDAO(sessionFactory.openSession()).getAllUsers();
     }
 

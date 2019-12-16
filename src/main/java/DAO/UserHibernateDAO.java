@@ -20,7 +20,7 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     @Override
-    public List getAllUsers() {
+    public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try {
             Transaction transaction = session.beginTransaction();
@@ -49,8 +49,6 @@ public class UserHibernateDAO implements UserDAO {
                 transaction.rollback();
             }
             LOGGER.log(Level.ALL, "Level All", e);
-        } finally {
-            session.close();
         }
         return result;
     }
