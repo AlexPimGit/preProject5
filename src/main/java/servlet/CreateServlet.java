@@ -2,6 +2,8 @@ package servlet;
 
 import model.User;
 import service.UserHibernateServiceImpl;
+import service.UserService;
+import service.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/create")
 public class CreateServlet extends HttpServlet {
-
+    private UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -27,7 +29,7 @@ public class CreateServlet extends HttpServlet {
         String name = request.getParameter("name");
         String nickname = request.getParameter("nickname");
         User user = new User(name, nickname);
-        UserHibernateServiceImpl.getInstance().addUser(user);
+        userService.addUser(user);
 
         response.sendRedirect(request.getContextPath() + "/");
     }

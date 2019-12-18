@@ -1,7 +1,9 @@
 package servlet;
 
+import DAO.UserDAO;
 import model.User;
 import service.UserHibernateServiceImpl;
+import service.UserService;
 import service.UserServiceImpl;
 
 import javax.servlet.ServletException;
@@ -14,10 +16,11 @@ import java.util.List;
 
 @WebServlet("/")
 public class IndexServlet extends HttpServlet {
+    private UserService userService = UserServiceImpl.getInstance();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<User> users = UserServiceImpl.getInstance().getAllUsers();
+        List<User> users = userService.getAllUsers();
         request.setAttribute("users", users);
         request.getRequestDispatcher("/usersindex.jsp").forward(request, response);
     }

@@ -12,22 +12,16 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private static UserServiceImpl userServiceImpl;
-    private SessionFactory sessionFactory;
+
+    private UserDAO userDAO = new UserJdbcDAO();//For JDBC
+    //private UserDAO userDAO = new UserHibernateDAO();//For JDBC
 
     public UserServiceImpl() {
     }
 
-    private UserServiceImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
-    //private UserDAO userDAO = new UserJdbcDAO(DBConfigJDBC.getMysqlConnection());//For JDBC
-
-    private UserDAO userDAO = new UserHibernateDAO(DBConfigHibernate.getSessionFactory().openSession());
-
     public static UserServiceImpl getInstance() {
         if (userServiceImpl == null) {
-            userServiceImpl = new UserServiceImpl(DBConfigHibernate.getSessionFactory());
+            userServiceImpl = new UserServiceImpl();//либо сессия либо коннекшен
         }
         return userServiceImpl;
     }

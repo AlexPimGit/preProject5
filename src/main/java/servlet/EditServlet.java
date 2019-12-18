@@ -2,6 +2,8 @@ package servlet;
 
 import model.User;
 import service.UserHibernateServiceImpl;
+import service.UserService;
+import service.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet("/edit")
 public class EditServlet extends HttpServlet {
-    //private UserServiceImpl userService = new UserJdbcServiceImpl(); //for JDBC
+    private UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -21,7 +23,7 @@ public class EditServlet extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
 //          String name = request.getParameter("name");
-            User user = UserHibernateServiceImpl.getInstance().getUserById(id);
+            User user = userService.getUserById(id);
             if (user != null) {
                 request.setAttribute("user", user);
                 getServletContext().getRequestDispatcher("/edit.jsp").forward(request, response);
@@ -41,7 +43,7 @@ public class EditServlet extends HttpServlet {
         String nickname = request.getParameter("nickname");
 
         User user = new User(id, name, nickname);
-        UserHibernateServiceImpl.getInstance().changeUser(user);
+        userService.changeUser(user);
         response.sendRedirect(request.getContextPath() + "/");
     }
 }

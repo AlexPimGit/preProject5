@@ -12,8 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserHibernateDAO implements UserDAO {
-    private Session session;
     private Logger LOGGER = Logger.getLogger(UserHibernateDAO.class.getName());
+    private Session session;
 
     public UserHibernateDAO(Session session) {
         this.session = session;
