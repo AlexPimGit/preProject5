@@ -1,7 +1,6 @@
 package servlet;
 
 import model.User;
-import service.UserHibernateServiceImpl;
 import service.UserService;
 import service.UserServiceImpl;
 
@@ -14,7 +13,7 @@ import java.io.IOException;
 
 @WebServlet("/create")
 public class CreateServlet extends HttpServlet {
-    private UserService userService = new UserServiceImpl();
+    private UserService userService = UserServiceImpl.getService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

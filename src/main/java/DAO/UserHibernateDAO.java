@@ -1,10 +1,8 @@
 package DAO;
 
 import model.User;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
+import util.DBConfigHibernate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +11,22 @@ import java.util.logging.Logger;
 
 public class UserHibernateDAO implements UserDAO {
     private Logger LOGGER = Logger.getLogger(UserHibernateDAO.class.getName());
-    private Session session;
+    private SessionFactory sessionFactory = DBConfigHibernate.getSessionFactory();//берем фабрику сессий
+    //private Session session = sessionFactory.openSession();// делаем сессию
+    private static UserHibernateDAO userHibernateDAO;
 
-    public UserHibernateDAO(Session session) {
-        this.session = session;
+    public static UserDAO getUserDAO() {
+        if (userHibernateDAO == null) {
+            userHibernateDAO = new UserHibernateDAO();
+        }
+        return userHibernateDAO;
     }
 
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try {
+            Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             users = session.createQuery("FROM User").list();
             transaction.commit();
@@ -33,11 +37,11 @@ public class UserHibernateDAO implements UserDAO {
         return users;
     }
 
-
     public boolean isUserExists(User user) {
         boolean result = false;
         Transaction transaction = null;
         try {
+            Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
             Query query = session.createQuery("FROM User WHERE id= :idParam");
             query.setParameter("idParam", user.getId());
@@ -53,12 +57,13 @@ public class UserHibernateDAO implements UserDAO {
         return result;
     }
 
-
     @Override
     public void addUser(User user) {
         Transaction transaction = null;
+        Session session = null;
         if (!isUserExists(user)) {
             try {
+                session = sessionFactory.openSession();
                 transaction = session.beginTransaction();
                 session.save(user);
                 transaction.commit();
@@ -72,9 +77,9 @@ public class UserHibernateDAO implements UserDAO {
         }
     }
 
-
     @Override
     public User getUserByName(String name) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("FROM User WHERE name= :nameParam");
         query.setParameter("nameParam", name);
@@ -86,6 +91,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public User getUserById(long id) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("FROM User WHERE id= :idParam");
         query.setParameter("idParam", id);
@@ -97,6 +103,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public void deleteUser(Long id) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         User currentUser = (User) session.get(User.class, id);
         session.delete(currentUser);
@@ -106,10 +113,10 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public void changeUser(User user) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.update(user);
         transaction.commit();
         session.close();
-
     }
 }

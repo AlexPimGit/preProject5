@@ -1,6 +1,7 @@
 package DAO;
 
 import model.User;
+import util.DBConfigJDBC;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,11 +12,14 @@ import java.util.logging.Logger;
 public class UserJdbcDAO implements UserDAO {
     private Logger LOGGER = Logger.getLogger(UserJdbcDAO.class.getName());//получаем логгер
 
-    private Connection connection;
+    private static UserJdbcDAO userJdbcDAO = null;
+    private Connection connection = DBConfigJDBC.getMysqlConnection();
 
-    public UserJdbcDAO(Connection connection) {
-        this.connection = connection;
-    } //протаскиваем connection из DBconfig (объект UserDAO будет иметь 1 connection кот в данном классе)
+    public static UserDAO getUserDAO() {
+        if (userJdbcDAO == null) {
+            userJdbcDAO = new UserJdbcDAO();
+        }
+        return userJdbcDAO;}
 
     @Override
     public List<User> getAllUsers() {

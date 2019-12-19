@@ -13,19 +13,18 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private static UserServiceImpl userServiceImpl;
 
-    private UserDAO userDAO = new UserJdbcDAO();//For JDBC
-    //private UserDAO userDAO = new UserHibernateDAO();//For JDBC
+    //private UserDAO userDAO = UserJdbcDAO.getUserDAO();//For JDBC
+    private UserDAO userDAO = UserHibernateDAO.getUserDAO();// For Hibernate
 
     public UserServiceImpl() {
     }
 
-    public static UserServiceImpl getInstance() {
+    public static UserServiceImpl getService() {
         if (userServiceImpl == null) {
-            userServiceImpl = new UserServiceImpl();//либо сессия либо коннекшен
+            userServiceImpl = new UserServiceImpl();
         }
         return userServiceImpl;
     }
-
 
     @Override
     public List<User> getAllUsers() {

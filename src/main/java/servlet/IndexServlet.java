@@ -1,8 +1,7 @@
 package servlet;
 
-import DAO.UserDAO;
 import model.User;
-import service.UserHibernateServiceImpl;
+
 import service.UserService;
 import service.UserServiceImpl;
 
@@ -16,7 +15,7 @@ import java.util.List;
 
 @WebServlet("/")
 public class IndexServlet extends HttpServlet {
-    private UserService userService = UserServiceImpl.getInstance();
+    private UserService userService = new UserServiceImpl();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -1,6 +1,5 @@
 package servlet;
 
-import service.UserHibernateServiceImpl;
 import service.UserService;
 import service.UserServiceImpl;
 
@@ -13,7 +12,7 @@ import java.io.IOException;
 
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
-    private UserService userService = new UserServiceImpl();
+    private UserService userService = UserServiceImpl.getService();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
