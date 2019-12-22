@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 public class UserHibernateDAO implements UserDAO {
     private Logger LOGGER = Logger.getLogger(UserHibernateDAO.class.getName());
     private SessionFactory sessionFactory = DBConfigHibernate.getSessionFactory();//берем фабрику сессий
-    //private Session session = sessionFactory.openSession();// делаем сессию
     private static UserHibernateDAO userHibernateDAO;
 
     public static UserDAO getUserDAO() {
@@ -48,10 +47,9 @@ public class UserHibernateDAO implements UserDAO {
             User isUserExists = (User) query.uniqueResult();
             transaction.commit();
             if (isUserExists != null) result = true;
+            session.close();
         } catch (HibernateException e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+
             LOGGER.log(Level.ALL, "Level All", e);
         }
         return result;
@@ -68,9 +66,7 @@ public class UserHibernateDAO implements UserDAO {
                 session.save(user);
                 transaction.commit();
             } catch (HibernateException e) {
-                if (transaction != null) {
-                    transaction.rollback();
-                }
+                transaction.rollback();
                 LOGGER.log(Level.ALL, "Level All", e);
             }
             session.close();
@@ -103,20 +99,34 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public void deleteUser(Long id) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        User currentUser = (User) session.get(User.class, id);
-        session.delete(currentUser);
-        transaction.commit();
+        Transaction transaction = null;
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            User currentUser = (User) session.get(User.class, id);
+            session.delete(currentUser);
+            transaction.commit();
+        }catch (HibernateException e){
+            transaction.rollback();
+            LOGGER.log(Level.ALL, "Level All", e);
+        }
         session.close();
     }
 
     @Override
     public void changeUser(User user) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+        Transaction transaction = null;
+        Session session = null;
+        try {
+        session = sessionFactory.openSession();
+        transaction = session.beginTransaction();
         session.update(user);
         transaction.commit();
+        }catch (HibernateException e){
+            transaction.rollback();
+            LOGGER.log(Level.ALL, "Level All", e);
+        }
         session.close();
     }
 }

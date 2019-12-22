@@ -30,6 +30,7 @@
                 <td>${user.nickname}</td>
                 <td>
                     <a href='<c:url value="/edit?id=${user.id}" />'>Edit</a>
+
                     <form method="post" action='<c:url value="/delete" />' style="display:inline;">
                         <input type="hidden" name="id" value="${user.id}">
                         <input type="submit" value="Delete">
