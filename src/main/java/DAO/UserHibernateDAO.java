@@ -2,7 +2,7 @@ package DAO;
 
 import model.User;
 import org.hibernate.*;
-import util.DBConfigHibernate;
+import util.DBHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +11,7 @@ import java.util.logging.Logger;
 
 public class UserHibernateDAO implements UserDAO {
     private Logger LOGGER = Logger.getLogger(UserHibernateDAO.class.getName());
-    private SessionFactory sessionFactory = DBConfigHibernate.getSessionFactory();//берем фабрику сессий
-    private static UserHibernateDAO userHibernateDAO;
-
-    public static UserDAO getUserDAO() {
-        if (userHibernateDAO == null) {
-            userHibernateDAO = new UserHibernateDAO();
-        }
-        return userHibernateDAO;
-    }
+    private SessionFactory sessionFactory = DBHelper.getSessionFactory();
 
     @Override
     public List<User> getAllUsers() {
@@ -31,14 +23,14 @@ public class UserHibernateDAO implements UserDAO {
             transaction.commit();
             session.close();
         } catch (HibernateException e) {
-            LOGGER.log(Level.ALL, "Level All", e);
+            LOGGER.log(Level.WARNING, "All users are not available", e);
         }
         return users;
     }
 
     public boolean isUserExists(User user) {
         boolean result = false;
-        Transaction transaction = null;
+        Transaction transaction;
         try {
             Session session = sessionFactory.openSession();
             transaction = session.beginTransaction();
@@ -49,8 +41,7 @@ public class UserHibernateDAO implements UserDAO {
             if (isUserExists != null) result = true;
             session.close();
         } catch (HibernateException e) {
-
-            LOGGER.log(Level.ALL, "Level All", e);
+            LOGGER.log(Level.WARNING, "User does not exist", e);
         }
         return result;
     }
@@ -65,35 +56,49 @@ public class UserHibernateDAO implements UserDAO {
                 transaction = session.beginTransaction();
                 session.save(user);
                 transaction.commit();
+                session.close();
             } catch (HibernateException e) {
                 transaction.rollback();
-                LOGGER.log(Level.ALL, "Level All", e);
+                LOGGER.log(Level.WARNING, "User not added", e);
             }
-            session.close();
         }
     }
 
     @Override
     public User getUserByName(String name) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("FROM User WHERE name= :nameParam");
-        query.setParameter("nameParam", name);
-        User currentUser = (User) query.uniqueResult();
-        transaction.commit();
-        session.close();
+        Transaction transaction = null;
+        Session session = null;
+        User currentUser = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("FROM User WHERE name= :nameParam");
+            query.setParameter("nameParam", name);
+            currentUser = (User) query.uniqueResult();
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            LOGGER.log(Level.WARNING, "User not found", e);
+        }
         return currentUser;
     }
 
     @Override
     public User getUserById(long id) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        Query query = session.createQuery("FROM User WHERE id= :idParam");
-        query.setParameter("idParam", id);
-        User currentUser = (User) query.uniqueResult();
-        transaction.commit();
-        session.close();
+        Transaction transaction = null;
+        Session session = null;
+        User currentUser = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("FROM User WHERE id= :idParam");
+            query.setParameter("idParam", id);
+            currentUser = (User) query.uniqueResult();
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            LOGGER.log(Level.WARNING, "User not found", e);
+        }
         return currentUser;
     }
 
@@ -107,11 +112,15 @@ public class UserHibernateDAO implements UserDAO {
             User currentUser = (User) session.get(User.class, id);
             session.delete(currentUser);
             transaction.commit();
-        }catch (HibernateException e){
-            transaction.rollback();
-            LOGGER.log(Level.ALL, "Level All", e);
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            LOGGER.log(Level.WARNING, "User not deleted", e);
         }
-        session.close();
+        if (session != null) {
+            session.close();
+        }
     }
 
     @Override
@@ -119,13 +128,13 @@ public class UserHibernateDAO implements UserDAO {
         Transaction transaction = null;
         Session session = null;
         try {
-        session = sessionFactory.openSession();
-        transaction = session.beginTransaction();
-        session.update(user);
-        transaction.commit();
-        }catch (HibernateException e){
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.update(user);
+            transaction.commit();
+        } catch (HibernateException e) {
             transaction.rollback();
-            LOGGER.log(Level.ALL, "Level All", e);
+            LOGGER.log(Level.WARNING, "User not changed", e);
         }
         session.close();
     }

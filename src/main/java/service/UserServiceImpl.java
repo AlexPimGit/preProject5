@@ -1,22 +1,17 @@
 package service;
 
 import DAO.UserDAO;
-import DAO.UserHibernateDAO;
-import DAO.UserJdbcDAO;
+import DAO.UserDaoFactory;
 import model.User;
-import org.hibernate.SessionFactory;
-import util.DBConfigHibernate;
-import util.DBConfigJDBC;
 
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private static UserServiceImpl userServiceImpl;
 
-    //private UserDAO userDAO = UserJdbcDAO.getUserDAO();//For JDBC
-    private UserDAO userDAO = UserHibernateDAO.getUserDAO();// For Hibernate
+    private UserDAO userDAO = UserDaoFactory.getUserTypeDAO();
 
-    public UserServiceImpl() {
+    private UserServiceImpl() {
     }
 
     public static UserServiceImpl getService() {

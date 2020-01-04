@@ -1,7 +1,7 @@
 package DAO;
 
 import model.User;
-import util.DBConfigJDBC;
+import util.DBHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,16 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserJdbcDAO implements UserDAO {
-    private Logger LOGGER = Logger.getLogger(UserJdbcDAO.class.getName());//получаем логгер
-
-    private static UserJdbcDAO userJdbcDAO = null;
-    private Connection connection = DBConfigJDBC.getMysqlConnection();
-
-    public static UserDAO getUserDAO() {
-        if (userJdbcDAO == null) {
-            userJdbcDAO = new UserJdbcDAO();
-        }
-        return userJdbcDAO;}
+    private Logger LOGGER = Logger.getLogger(UserJdbcDAO.class.getName());
+    private Connection connection = DBHelper.getConnection();
 
     @Override
     public List<User> getAllUsers() {
@@ -36,7 +28,7 @@ public class UserJdbcDAO implements UserDAO {
             }
             resultSet.close();
         } catch (SQLException e) {
-            LOGGER.log(Level.ALL, "Level All", e);
+            LOGGER.log(Level.WARNING, "All users are not available", e);
         }
         return list;
     }
@@ -44,7 +36,6 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public void addUser(User user) {
         String query = "INSERT INTO users (name, nickname) VALUES (?,?)";
-
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getNickname());
@@ -52,10 +43,9 @@ public class UserJdbcDAO implements UserDAO {
             LOGGER.fine("fine. now is executeUpdate");
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.FINEST, "Level FINEST", e);
+            LOGGER.log(Level.WARNING, "User not added", e);
         }
     }
-
 
     public User getUserByName(String name) {
         User user = new User();
@@ -69,7 +59,7 @@ public class UserJdbcDAO implements UserDAO {
             //user.setNickname(resultSet.getString("nickname"));
             resultSet.close();
         } catch (SQLException e) {
-            LOGGER.log(Level.FINER, "Level FINER", e);
+            LOGGER.log(Level.WARNING, "User not found", e);
         }
         return user;
     }
@@ -88,7 +78,7 @@ public class UserJdbcDAO implements UserDAO {
             LOGGER.info("info. now is executeUpdate");
             resultSet.close();
         } catch (SQLException e) {
-            LOGGER.log(Level.FINE, "Level FINE", e);
+            LOGGER.log(Level.WARNING, "User not found", e);
         }
         return user;
     }
@@ -100,7 +90,7 @@ public class UserJdbcDAO implements UserDAO {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.log(Level.CONFIG, "Level CONFIG", e);
+            LOGGER.log(Level.WARNING, "User not deleted", e);
         }
     }
 
@@ -113,7 +103,7 @@ public class UserJdbcDAO implements UserDAO {
             preparedStatement.setLong(3, user.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
-            LOGGER.log(Level.INFO, "Level INFO", e);
+            LOGGER.log(Level.WARNING, "User not changed", e);
         }
     }
 
@@ -121,7 +111,7 @@ public class UserJdbcDAO implements UserDAO {
         try (Statement stmt = connection.createStatement()) {
             stmt.execute("CREATE TABLE IF NOT EXISTS users (id bigint auto_increment, name varchar(256), nickname varchar(256), primary key (id))");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "Table not created", e);
         }
     }
 
@@ -129,7 +119,7 @@ public class UserJdbcDAO implements UserDAO {
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate("DROP TABLE IF EXISTS users");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "Table not deleted", e);
         }
     }
 }
