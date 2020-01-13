@@ -23,7 +23,9 @@ public class UserJdbcDAO implements UserDAO {
                 long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
                 String nickname = resultSet.getString("nickname");
-                User user = new User(id, name, nickname);
+                String role = resultSet.getString("role");
+                String password = resultSet.getString("password");
+                User user = new User(id, name, nickname, role, password);
                 list.add(user);
             }
             resultSet.close();
@@ -35,12 +37,12 @@ public class UserJdbcDAO implements UserDAO {
 
     @Override
     public void addUser(User user) {
-        String query = "INSERT INTO users (name, nickname) VALUES (?,?)";
+        String query = "INSERT INTO users (name, nickname, role, password) VALUES (?,?,?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getNickname());
-            LOGGER.info("info. now is executeUpdate");
-            LOGGER.fine("fine. now is executeUpdate");
+            preparedStatement.setString(3, user.getRole());
+            preparedStatement.setString(4, user.getPassword());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "User not added", e);
@@ -55,8 +57,23 @@ public class UserJdbcDAO implements UserDAO {
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
             resultSet.next();
-            //user.setId(resultSet.getLong("id"));
-            //user.setNickname(resultSet.getString("nickname"));
+            resultSet.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.WARNING, "User not found", e);
+        }
+        return user;
+    }
+
+    @Override
+    public User getUserByNamePassword(String name, String password) {
+        User user = new User();
+        String query = "SELECT * FROM users WHERE name = ? AND password = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, password);
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getResultSet();
+            resultSet.next();
             resultSet.close();
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "User not found", e);
@@ -75,7 +92,8 @@ public class UserJdbcDAO implements UserDAO {
             resultSet.next();
             user.setName(resultSet.getString("name"));
             user.setNickname(resultSet.getString("nickname"));
-            LOGGER.info("info. now is executeUpdate");
+            user.setRole(resultSet.getString("role"));
+            user.setPassword(resultSet.getString("password"));
             resultSet.close();
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "User not found", e);
@@ -96,20 +114,30 @@ public class UserJdbcDAO implements UserDAO {
 
     @Override
     public void changeUser(User user) {
-        String update = "UPDATE users SET name = ?, nickname = ? WHERE id = ?";
+        String update = "UPDATE users SET name = ?, nickname = ?, role = ?, password = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(update)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getNickname());
-            preparedStatement.setLong(3, user.getId());
+            preparedStatement.setString(3, user.getRole());
+            preparedStatement.setString(4, user.getPassword());
+            preparedStatement.setLong(5, user.getId());
             preparedStatement.execute();
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "User not changed", e);
         }
     }
 
+    @Override
+    public boolean checkUserPassword(String name, String password) {
+        String checkPassword = getUserByName(name).getPassword();
+        if (checkPassword.equals(password)) {
+            return true;
+        } else return false;
+    }
+
     public void createTable() {
         try (Statement stmt = connection.createStatement()) {
-            stmt.execute("CREATE TABLE IF NOT EXISTS users (id bigint auto_increment, name varchar(256), nickname varchar(256), primary key (id))");
+            stmt.execute("CREATE TABLE IF NOT EXISTS users (id bigint auto_increment, name varchar(256), nickname varchar(256), role varchar(256),password varchar(256), primary key (id))");
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "Table not created", e);
         }

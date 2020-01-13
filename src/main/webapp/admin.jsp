@@ -17,21 +17,28 @@
 <body bgcolor="#00CED1">
 <div align="center">
     <h2>Users List</h2>
-    <p><a href='<c:url value="/create" />'>Create new</a></p>
+    <p><a href='<c:url value="/admin/create" />'>Create new</a></p>
     <table border="1" cellpadding="5">
         <tr>
             <th>Name</th>
             <th>Nickname</th>
-            <th></th>
+            <th>Role</th>
+            <th>Password</th>
+            <th>Action</th>
         </tr>
         <c:forEach var="user" items="${users}">
             <tr>
                 <td>${user.name}</td>
                 <td>${user.nickname}</td>
+                <td>${user.role}</td>
+                <td>${user.password}</td>
                 <td>
-                    <a href='<c:url value="/edit?id=${user.id}" />'>Edit</a>
-
-                    <form method="post" action='<c:url value="/delete" />' style="display:inline;">
+                        <%--                    <a href='<c:url value="/edit?id=${user.id}" />'>Edit</a>--%>
+                    <form method="get" action='<c:url value="/admin/edit?id=${user.id}" />' style="display:inline;">
+                        <input type="hidden" name="id" value="${user.id}">
+                        <input type="submit" value="Edit">
+                    </form>
+                    <form method="post" action='<c:url value="/admin/delete" />' style="display:inline;">
                         <input type="hidden" name="id" value="${user.id}">
                         <input type="submit" value="Delete">
                     </form>

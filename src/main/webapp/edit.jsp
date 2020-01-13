@@ -13,7 +13,12 @@
     <input name="name" value="${user.name}" /><br><br>
     <label>Nickname</label><br>
     <input name="nickname" value="${user.nickname}" /><br><br>
+    <label>Role</label><br>
+    <input name="role" value="${user.role}" /><br><br>
+    <label>Password</label><br>
+    <input name="password" value="${user.password}" /><br><br>
     <input type="submit" value="Send" />
+
 </form>
 </body>
 </html>

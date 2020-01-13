@@ -15,19 +15,32 @@ public class User {
     private String name;
     @Column(name = "nickname")
     private String nickname;
+    @Column(name = "role")
+    private String role;
+    @Column(name = "password")
+    private String password;
 
     public User() {
     }
 
-    public User(Long id, String name, String nickname) {
+    public User(Long id, String name, String nickname, String role, String password) {
         this.id = id;
         this.name = name;
         this.nickname = nickname;
+        this.role = role;
+        this.password = password;
     }
 
-    public User(String name, String nickname) {
+    public User(String name, String nickname, String role, String password) {
         this.name = name;
         this.nickname = nickname;
+        this.role = role;
+        this.password = password;
+    }
+
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
     }
 
     public Long getId() {
@@ -54,12 +67,19 @@ public class User {
         this.nickname = nickname;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", nickname='" + nickname + '\'' +
-                '}';
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

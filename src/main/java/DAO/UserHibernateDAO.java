@@ -13,6 +13,7 @@ public class UserHibernateDAO implements UserDAO {
     private Logger LOGGER = Logger.getLogger(UserHibernateDAO.class.getName());
     private SessionFactory sessionFactory = DBHelper.getSessionFactory();
 
+
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -84,6 +85,26 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     @Override
+    public User getUserByNamePassword(String name, String password) {
+        Transaction transaction = null;
+        Session session = null;
+        User currentUser = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            Query query = session.createQuery("FROM User WHERE name= :nameParam AND password= :passwordParam");
+            query.setParameter("nameParam", name);
+            query.setParameter("passwordParam", password);
+            currentUser = (User) query.uniqueResult();
+            transaction.commit();
+            session.close();
+        } catch (HibernateException e) {
+            LOGGER.log(Level.WARNING, "User not found", e);
+        }
+        return currentUser;
+    }
+
+    @Override
     public User getUserById(long id) {
         Transaction transaction = null;
         Session session = null;
@@ -137,5 +158,18 @@ public class UserHibernateDAO implements UserDAO {
             LOGGER.log(Level.WARNING, "User not changed", e);
         }
         session.close();
+    }
+
+    @Override
+    public boolean checkUserPassword(String name, String password) {
+        try {
+            String checkPassword = getUserByName(name).getPassword();
+            if (checkPassword.equals(password)) {
+                return true;
+            }
+        } catch (NullPointerException e) {
+            LOGGER.log(Level.WARNING, "User not found", e);
+        }
+        return false;
     }
 }

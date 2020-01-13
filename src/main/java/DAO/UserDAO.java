@@ -11,10 +11,13 @@ public interface UserDAO {
 
     User getUserByName(String name);
 
+    User getUserByNamePassword(String name, String password);
+
     User getUserById(long id);
 
     void deleteUser(Long id);
 
     void changeUser(User user);
 
+    boolean checkUserPassword(String name, String password);
 }

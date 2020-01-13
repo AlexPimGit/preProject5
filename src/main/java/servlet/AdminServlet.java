@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/")
-public class IndexServlet extends HttpServlet {
+@WebServlet("/admin")
+public class AdminServlet extends HttpServlet {
     private UserService userService = UserServiceImpl.getService();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         List<User> users = userService.getAllUsers();
         request.setAttribute("users", users);
-        request.getRequestDispatcher("/usersindex.jsp").forward(request, response);
+        request.getRequestDispatcher("/admin.jsp").forward(request, response);
     }
 }
 

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/create")
+@WebServlet("/admin/create")
 public class CreateServlet extends HttpServlet {
     private UserService userService = UserServiceImpl.getService();
 
@@ -27,9 +27,11 @@ public class CreateServlet extends HttpServlet {
 
         String name = request.getParameter("name");
         String nickname = request.getParameter("nickname");
-        User user = new User(name, nickname);
+        String role = request.getParameter("role");
+        String password = request.getParameter("password");
+        User user = new User(name, nickname,role, password);
         userService.addUser(user);
 
-        response.sendRedirect(request.getContextPath() + "/");
+        response.sendRedirect(request.getContextPath() + "/admin");
     }
 }

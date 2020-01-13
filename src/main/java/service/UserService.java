@@ -13,7 +13,15 @@ public interface UserService {
 
     User getUserById(long id);
 
+    User getUserByName(String name);
+
+    User getUserByNamePassword(String name, String password);
+
     void changeUser(User user);
+
+    boolean checkUserPassword(String name, String password);
+
+
 }
 
 

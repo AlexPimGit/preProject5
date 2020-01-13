@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/edit")
+@WebServlet("/admin/edit")
 public class EditServlet extends HttpServlet {
     private UserService userService = UserServiceImpl.getService();
 
@@ -27,10 +27,10 @@ public class EditServlet extends HttpServlet {
                 request.setAttribute("user", user);
                 getServletContext().getRequestDispatcher("/edit.jsp").forward(request, response);
             } else {
-                getServletContext().getRequestDispatcher("/notfound.jsp").forward(request, response);
+                getServletContext().getRequestDispatcher("/notFound.jsp").forward(request, response);
             }
         } catch (Exception ex) {
-            request.getRequestDispatcher("/notfound.jsp").forward(request, response);//получать диспетчер из реквеста
+            request.getRequestDispatcher("/notFound.jsp").forward(request, response);//получать диспетчер из реквеста
         }
     }
 
@@ -40,10 +40,12 @@ public class EditServlet extends HttpServlet {
         long id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("name");
         String nickname = request.getParameter("nickname");
+        String role = request.getParameter("role");
+        String password = request.getParameter("password");
 
-        User user = new User(id, name, nickname);
+        User user = new User(id, name, nickname, role, password);
         userService.changeUser(user);
-        response.sendRedirect(request.getContextPath() + "/");
+        response.sendRedirect(request.getContextPath() + "/admin");
     }
 }
 

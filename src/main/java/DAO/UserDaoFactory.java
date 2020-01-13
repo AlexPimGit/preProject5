@@ -41,29 +41,3 @@ public class UserDaoFactory {
         return userDAO;
     }
 }
-
-/*
-
-            Properties prop = new Properties();
-            if (input == null) {
-                LOGGER.log(Level.WARNING, "Sorry, unable to find config.properties.");
-            }
-            prop.load(input);
-            daoTypeProperty = prop.getProperty("DAOType");
-
-
-            if (daoTypeProperty != null && daoTypeProperty.equals("UserHibernateDAO")) {
-                LOGGER.log(Level.INFO, "Load DAO type = {0}", daoTypeProperty);
-                return new UserHibernateDAO();
-            }
-            if (daoTypeProperty != null && daoTypeProperty.equals("UserJdbcDAO")) {
-                LOGGER.log(Level.INFO, "Load DAO type = {0}", daoTypeProperty);
-                return new UserJdbcDAO();
-            } else {
-                throw new RuntimeException(daoTypeProperty + "is unknown DAO type");
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
- */
-

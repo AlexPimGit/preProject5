@@ -7,11 +7,15 @@
 </head>
 <body>
 <h3>New agent</h3>
-<form method="post" action='<c:url value="/create" />'>
+<form method="post" action='<c:url value="/admin/create" />'>
     <label>Name</label><br>
     <input name="name"/><br><br>
     <label>Nickname</label><br>
     <input name="nickname" /><br><br>
+    <label>Role</label><br>
+    <input name="role" /><br><br>
+    <label>Password</label><br>
+    <input name="password" /><br><br>
     <input type="submit" value="Add" />
 </form>
 </body>

@@ -42,7 +42,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByName(String name){return userDAO.getUserByName(name);}
+
+    @Override
+    public User getUserByNamePassword(String name, String password) {
+        return userDAO.getUserByNamePassword(name, password);
+    }
+
+    @Override
     public void changeUser(User user) {
         userDAO.changeUser(user);
+    }
+
+    @Override
+    public boolean checkUserPassword(String name, String password) {
+        return userDAO.checkUserPassword(name, password);
     }
 }
