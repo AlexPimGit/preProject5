@@ -1,4 +1,4 @@
-package servlet;
+package servlet.filters;
 
 import java.io.IOException;
 import java.util.Date;
@@ -39,7 +39,6 @@ public class LogFilterServlet implements Filter {
         System.out.println("#INFO " + new Date() + " - ServletPath :" + servletPath //
                 + ", URL =" + req.getRequestURL());
 
-        // Разрешить request продвигаться дальше. (Перейти данный Filter).
         chain.doFilter(request, response);
     }
 

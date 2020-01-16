@@ -21,7 +21,6 @@ public class EditServlet extends HttpServlet {
 
         try {
             int id = Integer.parseInt(request.getParameter("id"));
-//          String name = request.getParameter("name");
             User user = userService.getUserById(id);
             if (user != null) {
                 request.setAttribute("user", user);
