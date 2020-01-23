@@ -18,7 +18,6 @@ public class CreateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         getServletContext().getRequestDispatcher("/create.jsp").forward(request, response);
     }
 
@@ -29,9 +28,8 @@ public class CreateServlet extends HttpServlet {
         String nickname = request.getParameter("nickname");
         String role = request.getParameter("role");
         String password = request.getParameter("password");
-        User user = new User(name, nickname,role, password);
+        User user = new User(name, nickname, role, password);
         userService.addUser(user);
-
         response.sendRedirect(request.getContextPath() + "/admin");
     }
 }

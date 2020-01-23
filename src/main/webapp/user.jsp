@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,14 +16,11 @@
         <th>Password</th>
     </tr>
     <tr>
-        <th><c:url value="${loginUserName}"/></th>
-        <th><c:url value="${loginUserNickname}"/></th>
-        <th><c:url value="${loginUserRole}"/></th>
-        <th><c:url value="${loginUserPassword}"/></th>
+        <td>${user.name}</td>
+        <td>${user.nickname}</td>
+        <td>${user.role}</td>
+        <td>${user.password}</td>
     </tr>
 </table>
-<form action="Logout" method="post">
-    <input type="submit" value="Logout">
-</form>
 </body>
 </html>

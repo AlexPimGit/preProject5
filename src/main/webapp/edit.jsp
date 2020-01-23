@@ -18,7 +18,6 @@
     <label>Password</label><br>
     <input name="password" value="${user.password}" /><br><br>
     <input type="submit" value="Send" />
-
 </form>
 </body>
 </html>

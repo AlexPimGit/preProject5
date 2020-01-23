@@ -13,15 +13,14 @@ import java.io.IOException;
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("loginUser");
-        String loginUserName = user.getName();
-        String loginUserNickname = user.getNickname();
-        String loginUserPassword = user.getPassword();
-        String loginUserRole = user.getRole();
+        request.setAttribute("user", user);
+//        request.setAttribute("loginUserNickname", user.getNickname());
+//        request.setAttribute("loginUserPassword", user.getPassword());
+//        request.setAttribute("loginUserRole", user.getRole());
         getServletContext().getRequestDispatcher("/user.jsp").forward(request, response);
     }
 }

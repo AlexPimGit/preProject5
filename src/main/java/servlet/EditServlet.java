@@ -41,10 +41,9 @@ public class EditServlet extends HttpServlet {
         String nickname = request.getParameter("nickname");
         String role = request.getParameter("role");
         String password = request.getParameter("password");
-
         User user = new User(id, name, nickname, role, password);
         userService.changeUser(user);
-        response.sendRedirect(request.getContextPath() + "/admin");
+        response.sendRedirect("/admin");
     }
 }
 

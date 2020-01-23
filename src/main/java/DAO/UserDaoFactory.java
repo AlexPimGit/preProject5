@@ -33,7 +33,7 @@ public class UserDaoFactory {
                     userDAO = new UserJdbcDAO();
                     break;
                 default:
-                    throw new IOException();
+                    throw new IOException();//переделать чтобы exception был не по умолчанию, по умолчанию должно что-то отрабатывать
             }
         } catch (IOException ex) {
             LOGGER.log(Level.WARNING, "Sorry, type of UserDAO is not correct.");

@@ -3,6 +3,7 @@ package servlet;
 import model.User;
 import service.UserService;
 import service.UserServiceImpl;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,9 +29,8 @@ public class LoginServlet extends HttpServlet {
         String loginUserName = request.getParameter("name");
         String loginUserPassword = request.getParameter("password");
         User loginUser = userService.getUserByNamePassword(loginUserName, loginUserPassword);
-
         if (loginUser == null) {
-            getServletContext().getRequestDispatcher("/loginError.jsp").forward(request, response);
+            response.sendRedirect("/loginError.jsp");//
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("loginUser", loginUser);

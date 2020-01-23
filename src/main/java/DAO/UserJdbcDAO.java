@@ -67,13 +67,18 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public User getUserByNamePassword(String name, String password) {
         User user = new User();
-        String query = "SELECT * FROM users WHERE name = ? AND password = ?";
+        String query = "SELECT * FROM users WHERE name = ? AND `password`=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, password);
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getResultSet();
             resultSet.next();
+            user.setName(resultSet.getString("name"));
+            user.setNickname(resultSet.getString("nickname"));
+            user.setRole(resultSet.getString("role"));
+            user.setPassword(resultSet.getString("password"));
+            resultSet.close();
             resultSet.close();
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, "User not found", e);

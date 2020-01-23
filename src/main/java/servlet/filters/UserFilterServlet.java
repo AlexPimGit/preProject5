@@ -20,22 +20,17 @@ public class UserFilterServlet implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-        HttpSession session = httpRequest.getSession(); //берем текущую сессию, false - если сессия не существует, то ссылка на нее не будет получена
-        User currentUser = (User) session.getAttribute("loginUser");//достаем от туда юзера
-        if (currentUser == null) {
-            httpRequest.getRequestDispatcher("/").forward(httpRequest, httpResponse);
+        HttpSession session = httpRequest.getSession();
+        User loginUser = (User) session.getAttribute("loginUser");//достаем от туда юзера
+        if (loginUser == null) {
+            httpResponse.sendRedirect("/");
             return;
         }
-        if (currentUser.getName() == null || currentUser.getPassword() == null || currentUser.getRole() == null) {
-            httpRequest.getRequestDispatcher("/").forward(httpRequest, httpResponse);
-            return;
-        }
-        if ("admin".equals(currentUser.getRole()) || "user".equals(currentUser.getRole())) {
-            httpRequest.getRequestDispatcher("/user").forward(httpRequest, httpResponse);
+        if ("admin".equals(loginUser.getRole()) || "user".equals(loginUser.getRole())) {
+            filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            httpRequest.getRequestDispatcher("/").forward(httpRequest, httpResponse);
+            httpResponse.sendRedirect("/");
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
